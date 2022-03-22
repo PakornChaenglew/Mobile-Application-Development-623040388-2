@@ -29,7 +29,7 @@ class _QuestShowingState extends State<QuestShowing> {
 
   late bool checkchoise;
 
-  bool previous = false;
+  bool previous = true;
   Widget? nextPage;
 
   @override
@@ -46,14 +46,12 @@ class _QuestShowingState extends State<QuestShowing> {
     quest_check4 = widget.questlist[widget.num]["choice_4_check"];
 
     if (widget.num > 1 && widget.num <= widget.questlist.length) {
-      previous = true;
+      previous = false;
     }
     if (widget.num < widget.questlist.length) {
       nextPage = QuestShowing(num: widget.num + 1, questlist: widget.questlist,);
     }
   }
-
-  void Szxc()=> false;
 
   @override
   Widget build(BuildContext context) {
@@ -118,36 +116,41 @@ class _QuestShowingState extends State<QuestShowing> {
                   ))
             ),
             Expanded(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Visibility(
-                      visible: previous, 
-                        child: ElevatedButton(
-                          onPressed: () => Navigator.of(context).pop(),
-                          child: const Text("Previous"),
-                        )
-                    ),
-                    ElevatedButton(
-                          onPressed: () {
-                            Navigator.pushNamed(context, '/');
-                          },
-                          child: const Text("Home"),
-                    ),
-                    Visibility(
-                        visible: nextPage != null,
-                        child: ElevatedButton(
-                          onPressed: () => Navigator.of(context).push(
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    nextPage ?? Container()
+                child: Center(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        IgnorePointer(
+                            ignoring: previous,
+                            child: Opacity(
+                              opacity: previous ? 0:1,
+                                child: ElevatedButton(
+                                  onPressed: () => Navigator.of(context).pop(),
+                                  child: const Text("Previous"),
                             )
-                          ),
-                          child: const Text("Next"),
-                        )
-                    )
-                  ],
-                )
+                        )),
+                        ElevatedButton(
+                              onPressed: () {
+                                Navigator.pushNamed(context, '/');
+                              },
+                              child: const Text("Home"),
+                        ),
+                            IgnorePointer(
+                                ignoring: nextPage == null,
+                                child: Opacity(
+                                    opacity: nextPage == null ? 0:1,
+                                    child: ElevatedButton(
+                                      onPressed: () => Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                nextPage ?? Container()
+                                        )
+                                      ),
+                                      child: const Text("Next"),
+                                )
+                            ))
+                      ],
+                ))
             )
           ],
         ),
@@ -199,9 +202,9 @@ class _TapboxAState extends State<TapboxA> {
   void _some(BuildContext context){
     nextPage = QuestShowing(num: widget.num + 1, questlist: widget.questlist,);
     if (widget.check == true) {
+      TextTitle = "Score!";
+      Textcontent = "Congrats, you get ${widget.num} point";
       if (widget.num < widget.questlist.length) {
-        TextTitle = "Score!";
-        Textcontent = "Congrats, you get ${widget.num} point";
         function = ElevatedButton(child: const Text("OK"),
             onPressed: () {
               Navigator.of(context).push(
@@ -213,8 +216,6 @@ class _TapboxAState extends State<TapboxA> {
             });
       }
       else {
-        TextTitle = "Score!";
-        Textcontent = "Congrats, you get ${widget.num} point";
         function = ElevatedButton(child: const Text("OK"),
             onPressed: () {
               Navigator.pushNamed(context, '/restart');
