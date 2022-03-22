@@ -199,7 +199,7 @@ class _TapboxAState extends State<TapboxA> {
   void _some(BuildContext context){
     nextPage = QuestShowing(num: widget.num + 1, questlist: widget.questlist,);
     if (widget.check == true) {
-      if (widget.num < 3) {
+      if (widget.num < widget.questlist.length) {
         TextTitle = "Score!";
         Textcontent = "Congrats, you get ${widget.num} point";
         function = ElevatedButton(child: const Text("OK"),
